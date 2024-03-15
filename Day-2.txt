@@ -1,0 +1,45 @@
+import {View, Text, FlatList, TouchableOpacity} from "react-native"
+import {useState} from "react"
+
+
+export default function App(){
+  const data = ["Trying New Things","Art Galleries","Rave","Cafe Hopping","Boxing","Sake","Fencing","Gin Tonic","Baking","Environmentalism","League of Legends","Road Trips","Hockey","Reggaeton","DIY","Virtual Reality","Equestrian","Art","Tea","Tarot","Theater","Pride","Climbing","VR Room","Online Shopping","Indoor Activities","Social Development","Astrology","Pimms","Blogging","Couchsurfing","Online Broker","Choir"]
+
+  
+  const [selectedInterest, setSelectedInterest] = useState([]);
+
+  const addInterest = (index)=>{
+    const interest = selectedInterest.find(item => item == index);
+    if(!interest){
+      setSelectedInterest([...selectedInterest, index])
+    }
+    else{
+      const newList = selectedInterest.filter(item => item!= index);
+      setSelectedInterest(newList);
+    }
+  }
+  return(
+    <>
+      <View style={{padding:10}}>
+        <Text> </Text>
+        <Text style={{fontSize:30, fontWeight:"bold"}}>Interests</Text>
+        <Text style={{color:"gray"}}>Let everyone know what you're passionate about, By adding it to your profile.</Text>
+        <View style={{flexWrap:"wrap",flex:1,}}>
+        <FlatList 
+          data={data}
+          contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap' }}
+          renderItem={({item,index}) =>{
+            return <TouchableOpacity style={[{borderWidth:1, borderColor:"gray", padding:7,borderRadius:99,margin:2,},selectedInterest.map(item => item == index && {backgroundColor:"red",borderColor:"white"})]}>
+              <Text onPress={()=>{addInterest(index)}}>{item}</Text>
+            </TouchableOpacity>
+          }}
+        />
+
+        <TouchableOpacity style={{justifyContent:"center",alignItems:"center",}}>
+          <Text style={{display:"flex",backgroundColor:selectedInterest.length >= 5 ? "orange":"gray",padding:10,borderRadius:99, width:200, justifyContent:"center",alignItems:"center"}}>CONTINUE ({selectedInterest.length}/5)</Text>
+        </TouchableOpacity>
+        </View>
+      </View>
+    </>
+  )
+}
