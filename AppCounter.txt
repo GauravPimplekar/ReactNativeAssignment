@@ -1,0 +1,39 @@
+import { useEffect, useState } from 'react';
+import { View, Text, Button} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const App = () => {
+  const [openCount, setOpenCount] = useState(0);
+
+
+  useEffect(()=>{
+    const getValue = async()=>{
+      let value = await AsyncStorage.getItem("openCount");
+      value++;
+      setOpenCount(value);
+    }
+
+    getValue();
+  },[])
+
+
+  useEffect(()=>{
+    const setValue = async()=>{
+      await AsyncStorage.setItem("openCount",openCount.toString());
+    }
+
+    setValue();
+  },[openCount])
+
+
+  
+  return(
+    <View style={{marginTop:100,justifyContent:"center",alignItems:"center",flex:1}}>
+      <Text>Total time you open app is : {openCount}</Text>
+      
+    </View>
+  )
+  
+};
+
+export default App;
