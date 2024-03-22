@@ -29,7 +29,7 @@ const App = () => {
   
   return(
     <View style={{marginTop:100,justifyContent:"center",alignItems:"center",flex:1}}>
-      <Text>Total time you open app is : {openCount}</Text>
+      <Text>Total time you open the app is : {openCount}</Text>
       
     </View>
   )
