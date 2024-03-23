@@ -1,0 +1,68 @@
+import {Text, View,Pressable, TextInput} from "react-native"
+import {useState,useEffect} from "react";
+
+
+
+function Buttons(props){
+  return <Pressable onPress={props.onPress} style={{padding:10, backgroundColor:"red",borderRadius:100, width:"50%",alignItems:"center"}}>
+        <Text>{props.value}</Text>
+      </Pressable>
+}
+
+export default function App(){
+  const [count , setCount] = useState(0);
+  const [value, setValue] = useState("");
+  const [start, setStart] = useState(false);
+  useEffect(()=>{
+    let interval;
+    if(start == true){
+      interval = setInterval(()=>{
+        setCount(curr => curr+1);
+      },10)
+    }
+
+  //   console.log("start");
+    return ()=> clearInterval(interval);
+  },[start])
+
+  const checkValue = (hours)=>{
+    hours = hours.toString();
+    hours = hours.length == 1 ? "0"+hours : hours;
+    return hours;
+  }
+  const formatTime = ()=>{
+    let hours = Math.floor((count / 360000));
+    let minute = Math.floor((count%360000) / 6000);
+    let second = Math.floor(((count%360000) % 6000) / 100);
+    let miniSecond = ((count%360000) % 6000) % 100;
+
+    return checkValue(hours) + ":" + checkValue(minute)+":"+checkValue(second)+":"+checkValue(miniSecond);
+
+  }
+
+const setValueFunction =()=>{
+  
+  value == "" ? setCount(0) : isNaN(parseInt(value)) ? setCount(0) : setCount(parseInt(value)*6000) ;
+  
+  
+}
+
+const resetFunction = ()=>{
+  setCount(0);
+}
+  
+  return(
+    <View style={{marginTop:300,alignItems:"center"}}>
+      <Text style={{fontSize:40,padding:20}}>{formatTime()}</Text>
+      <View style={{flexDirection:"row"}}>
+        <Buttons onPress={()=> setStart(!start)} value={start ? "Stop" :"Start"} />
+        <Buttons onPress={resetFunction} value={"Reset"} />
+      </View>
+
+      <View style={{marginVertical:30,borderColor:"gray",borderWidth:0.5,padding:10,alignItems:"center",borderRadius:10}}>
+        <TextInput style={{marginVertical:10}} onChangeText={text => setValue(text)} placeholder={"Enter Time in Minute"} />
+        <Buttons onPress={setValueFunction} value={"Set Time"} />
+      </View>
+    </View>
+  )
+}
